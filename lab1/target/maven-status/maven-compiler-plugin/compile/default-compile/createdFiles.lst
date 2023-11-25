@@ -1,0 +1,10 @@
+com\labs\ORM\Lexicon.class
+com\labs\ORM\Phrase.class
+com\labs\Servlets\LexiconServlet.class
+com\labs\ORM\Text.class
+com\labs\Services\PhraseService.class
+com\labs\Services\LexiconService.class
+com\labs\Services\SourceService.class
+com\labs\Services\SemanticService.class
+com\labs\ORM\Source.class
+com\labs\Services\TextService.class
