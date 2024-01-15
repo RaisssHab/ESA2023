@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.json.bind.annotation.JsonbProperty;
 import javax.xml.bind.annotation.XmlAccessType;
 
-@XmlRootElement(name = "phraseRequest")
+@XmlRootElement(name = "semanticsRequest")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SemanticsRequest {
     @JsonbProperty("semanticId")
