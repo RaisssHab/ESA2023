@@ -1,0 +1,87 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" 
+       xmlns:jms="http://www.springframework.org/schema/jms" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/jms 
+                           https://www.springframework.org/schema/jms/spring-jms.xsd"> 
+
+    <bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate">
+        <property name="environment">
+            <props>
+                <prop key="java.naming.factory.initial">com.sun.enterprise.naming.SerialInitContextFactory</prop>
+                <prop key="java.naming.factory.url.pkgs">com.sun.enterprise.naming</prop>
+                <prop key="java.naming.factory.state">com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl</prop>
+            </props>
+        </property>
+    </bean>
+
+    
+    <context:component-scan base-package="com.labs.service"/>
+    <context:component-scan base-package="com.labs.configuration"/>
+    <context:component-scan base-package="com.labs.email"/>
+    <context:component-scan base-package="com.labs.jms"/>
+    <context:component-scan base-package="com.labs.logging"/>
+
+    <bean id="connectionFactory" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiTemplate" ref="jndiTemplate"/>
+        <property name="jndiName" value="jms/ConnectionFactory"/>
+    </bean>
+    <bean id="destination" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiTemplate" ref="jndiTemplate"/>
+        <property name="jndiName" value="jms/topic"/>
+    </bean>
+
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="defaultDestination" ref="destination"/>
+    </bean>
+
+    <!-- <bean id="connectionFactory" class="org.springframework.jndi.JndiObjectFactoryBean"> -->
+    <!--    <property name="jndiName" value="jms/ConnectionFactory"/> -->
+    <!-- </bean> -->
+
+    <!--<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate"> -->
+        <!--<constructor-arg ref="connectionFactory" /> -->
+    <!--    <property name="connectionFactory" ref="connectionFactory"/> -->
+    <!--    <property name="defaultDestinationName" value="topic"/> -->
+    <!--</bean>  -->
+
+    <bean id="defaultErrorHandler" class="com.labs.jms.DefaultErrorHandler" />
+
+
+    <!-- <bean id="jmsListenerContainerFactory" class="org.springframework.jms.config.DefaultJmsListenerContainerFactory"> -->
+    <!--    <property name="connectionFactory" ref="connectionFactory"/> -->
+    <!--     <property name="errorHandler" ref="defaultErrorHandler" /> -->
+    <!--     <property name="pubSubDomain" value="true" /> -->
+    <!-- </bean> -->
+
+    <!-- <bean id="emailMessageListener" class="com.labs.jms.EmailMessageListener" />  -->
+
+    <!-- <bean id="logMessageListener" class="com.labs.jms.LogMessageListener" />  -->
+
+    <!-- <bean id="container1" class="org.springframework.jms.listener.DefaultMessageListenerContainer">  -->
+    <!--      <property name="connectionFactory" ref="connectionFactory"/>  -->
+    <!--      <property name="destination" ref="destination"/>  -->
+    <!--      <property name="messageListener" ref="emailMessageListener"/> --> 
+    <!--      <property name="pubSubDomain" value="true" /> -->
+    <!-- </bean>  -->
+
+    <!-- <bean id="container2" class="org.springframework.jms.listener.DefaultMessageListenerContainer"> -->
+    <!--     <property name="connectionFactory" ref="connectionFactory"/> -->
+    <!--     <property name="destination" ref="destination"/> -->
+    <!--     <property name="messageListener" ref="logMessageListener"/> -->
+    <!--     <property name="pubSubDomain" value="true" /> -->
+    <!-- </bean> -->
+
+    <bean id="jmsListenerContainerFactory" class="org.springframework.jms.config.DefaultJmsListenerContainerFactory">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="errorHandler" ref="defaultErrorHandler" />
+        <property name="pubSubDomain" value="true" />
+    </bean>
+
+    <jms:annotation-driven/>
+</beans>
