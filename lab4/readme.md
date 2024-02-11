@@ -1,4 +1,3 @@
-![изображение](https://github.com/RaisssHab/ESA2023/assets/60664914/40da3bb2-d5bf-4ddc-baa1-9fc8511d7ec6)<h1>Practical Work #4. Java Message Service </h1>
 <h2>Task 1</h2>
 
 We have added a new table with name "change_log". It consists of the following columns:
